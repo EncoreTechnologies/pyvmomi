@@ -83,6 +83,8 @@ class VmomiJSONEncoder(json.JSONEncoder):
                                                    obj._moId)
                 result['_vimtype'] = obj.__class__.__name__
                 for prop in obj._GetPropertyList():
+                    if 'vim.ClusterComputeResource' in str(obj) and prop.name == 'configManagerEnabled':
+                        continue
                     result[prop.name] = getattr(obj, prop.name)
                 return self._remove_empty_dynamic_if(result)
             return str(obj).strip("'")  # see VmomiSupport.FormatObject
